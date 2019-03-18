@@ -227,7 +227,7 @@ public:
         } // end of for
     }
 
-    //必要的初始化操作，包括输入输出空间分配，临时空间分配等一切可预先分配的操作，返回值0为正常，其他状态表示异常
+    // Initialization
     virtual int Init() {
         w_ifco.Resize(input_size, 4 * output_size);
         u_ifco.Resize(output_size, 4 * output_size);
@@ -261,8 +261,7 @@ public:
         return ht.Data();
     }
 
-    //设置kernel参数
-    // kernel参数，p_weights_data is already transposed
+    // Set weights
     virtual int SetKernel(float *p_weights_data, float *p_bias_data) {
         // Transpose, [4096][2048] -> [2048][4096]
         float *pw = new float[4 * (input_size + output_size) * output_size];
@@ -427,11 +426,10 @@ private:
     }
 
 private:
-    std::string layer_name;  //网络层名字
-    size_t num_threads; //设置的线程数目，这里最好都为1
+    std::string layer_name;
+    size_t num_threads; //设置的线程数目
 
     float *p_input_data; //输入数据指针，多个LSTM Cell输入按顺序排列
-    //float *p_output_data; //输出数据指针，暂时只需要一个输出
 
     // Number of layers
     size_t cell_num;
@@ -464,11 +462,6 @@ private:
     hpj::Matrix<float> xw;
   
     hpj::Vector<float> uh;
-
-    //float *p_weights_data;
-    //float *p_bias_data;    //kernel参数，bias向量，大小为 4 * output_size
-    //float *p_cell_data //cell data
-    //float *p_hidden_data //hidden data
 };
 
 #endif // MULTI_LSTM_LAYER_H_
